@@ -1,81 +1,86 @@
 <template>
-  <v-card width="400px" class="mx-auto mt-5">
-    <v-alert v-if="errorMessages.length != 0" type="error">
-      <ul>
-        <li v-for="errorMessage in errorMessages" :key="errorMessage">
-          {{ errorMessage }}
-        </li>
-      </ul>
-    </v-alert>
-    <v-card-title>
-      <h1 class="display-1">ユーザー登録</h1>
-    </v-card-title>
-    <v-card-text>
-      <validation-observer ref="observer" v-slot="{ invalid }">
-        <v-form>
-          <ValidationProvider
-            ref="observer"
-            v-slot="{ errors }"
-            rules="required"
-            name="ニックネーム"
-          >
-            <v-text-field
-              id="nickname-field"
-              v-model="nickname"
-              prepend-icon="mdi-card-account-details-outline"
-              type="email"
-              label="ニックネーム"
-              required
-              :error-messages="errors"
-            />
-          </ValidationProvider>
-          <ValidationProvider
-            ref="observer"
-            v-slot="{ errors }"
-            rules="required|email"
-            name="メールアドレス"
-          >
-            <v-text-field
-              id="email-field"
-              v-model="email"
-              prepend-icon="mdi-email"
-              type="email"
-              label="メールアドレス"
-              required
-              :error-messages="errors"
-            />
-          </ValidationProvider>
-          <ValidationProvider
-            ref="observer"
-            v-slot="{ errors }"
-            rules="required|min:6|max:30"
-            name="パスワード"
-          >
-            <v-text-field
-              id="password-field"
-              v-model="password"
-              @click:append="showPassword = !showPassword"
-              prepend-icon="mdi-lock"
-              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-              label="パスワード"
-              required
-              :error-messages="errors"
-            />
-          </ValidationProvider>
-          <v-card-actions>
-            <v-btn
-              id="submit"
-              class="info"
-              @click="submit()"
-              :disabled="invalid"
-              >登録</v-btn
+  <div>
+    <v-card width="400px" class="mx-auto mt-5">
+      <v-alert v-if="errorMessages.length != 0" type="error">
+        <ul>
+          <li v-for="errorMessage in errorMessages" :key="errorMessage">
+            {{ errorMessage }}
+          </li>
+        </ul>
+      </v-alert>
+      <v-card-title>
+        <h1 class="display-1">ユーザー登録</h1>
+      </v-card-title>
+      <v-card-text>
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <v-form>
+            <ValidationProvider
+              ref="observer"
+              v-slot="{ errors }"
+              rules="required"
+              name="ニックネーム"
             >
-          </v-card-actions>
-        </v-form>
-      </validation-observer>
-    </v-card-text>
-  </v-card>
+              <v-text-field
+                id="nickname-field"
+                v-model="nickname"
+                prepend-icon="mdi-card-account-details-outline"
+                type="email"
+                label="ニックネーム"
+                required
+                :error-messages="errors"
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              ref="observer"
+              v-slot="{ errors }"
+              rules="required|email"
+              name="メールアドレス"
+            >
+              <v-text-field
+                id="email-field"
+                v-model="email"
+                prepend-icon="mdi-email"
+                type="email"
+                label="メールアドレス"
+                required
+                :error-messages="errors"
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              ref="observer"
+              v-slot="{ errors }"
+              rules="required|min:6|max:30"
+              name="パスワード"
+            >
+              <v-text-field
+                id="password-field"
+                v-model="password"
+                @click:append="showPassword = !showPassword"
+                prepend-icon="mdi-lock"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"
+                label="パスワード"
+                required
+                :error-messages="errors"
+              />
+            </ValidationProvider>
+            <v-card-actions>
+              <v-btn
+                id="submit"
+                class="info"
+                @click="submit()"
+                :disabled="invalid"
+                >登録</v-btn
+              >
+            </v-card-actions>
+          </v-form>
+        </validation-observer>
+      </v-card-text>
+    </v-card>
+    <v-card width="400px" class="mx-auto mt-5">
+      <v-btn to="/login" text>ログインはこちら</v-btn>
+    </v-card>
+  </div>
 </template>
 
 <script>
