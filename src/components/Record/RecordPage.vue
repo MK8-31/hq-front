@@ -90,6 +90,25 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="showHelp" max-width="400" persistent="true">
+      <v-card>
+        <v-card-title>
+          <div>まずはタスクを作ろう！</div>
+        </v-card-title>
+        <v-card-text class="mt-5 mb-5">
+          <p>
+            成長するにはどんなことを習慣化すればいいのかを考えてタスク化しよう！
+          </p>
+          <p>例: ムキムキになりたい</p>
+          <p>タスク: 腕立て20回 など</p>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn to="/task_create" color="primary">タスク作成</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -147,6 +166,7 @@
       nowLvExp: 0,
       nowLvMaxExp: 0,
       isLevelUp: false,
+      showHelp: false,
     }),
     async mounted() {
       await this.getTasks();
@@ -174,6 +194,9 @@
             this.tasks = response.data.data;
             this.$store.commit("setTasks", response.data.data);
             // // console.log(this.tasks);
+            if (this.tasks.length == 0) {
+              this.showHelp = true;
+            }
           })
           .catch((error) => {
             console.error(error);
