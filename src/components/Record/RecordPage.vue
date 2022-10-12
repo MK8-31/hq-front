@@ -90,7 +90,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="showHelp" max-width="400" persistent="true">
+    <v-dialog v-model="showHelp" max-width="400" persistent>
       <v-card>
         <v-card-title>
           <div>まずはタスクを作ろう！</div>
@@ -174,7 +174,7 @@
       this.displayList = this.tasks.slice(0, this.pageSize);
 
       this.isDisplayTasksCompeted();
-      console.log(this.displayList);
+      // console.log(this.displayList);
     },
     methods: {
       /**
@@ -190,7 +190,7 @@
             },
           })
           .then((response) => {
-            console.log(response);
+            // console.log(response);
             this.tasks = response.data.data;
             this.$store.commit("setTasks", response.data.data);
             // // console.log(this.tasks);
@@ -237,7 +237,7 @@
           )
           .then((response) => {
             this.displayList[i].last_time = moment().format("YYYY-MM-DD");
-            console.log(response);
+            // console.log(response);
             // 今のレベル
             const lv = response.data.data.level;
             // 累計経験値
