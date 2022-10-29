@@ -106,7 +106,7 @@
             email: this.email,
             password: this.password,
           })
-          .then((response) => {
+          .then(() => {
             this.login = true;
             this.$cookies.set("isLoggedIn", true);
             this.$store.commit("setLoggedIn", true);
