@@ -106,8 +106,9 @@
             email: this.email,
             password: this.password,
           })
-          .then(() => {
+          .then((response) => {
             this.login = true;
+            this.$cookies.set("isLoggedIn", true);
             this.$store.commit("setLoggedIn", true);
             this.$router.push("/record");
           })

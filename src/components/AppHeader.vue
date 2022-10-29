@@ -149,6 +149,7 @@
           .catch((err) => {
             console.error(err);
           });
+        this.$cookies.remove("isLoggedIn");
       },
     },
   };
