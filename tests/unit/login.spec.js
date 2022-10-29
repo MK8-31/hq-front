@@ -5,6 +5,7 @@ const { required } = require("vee-validate/dist/rules.umd");
 extend("required", required);
 import Vuetify from "vuetify";
 import { createLocalVue, mount } from "@vue/test-utils";
+import { RouterLinkStub } from "@vue/test-utils";
 
 jest.mock("axios", () => ({
   post: jest.fn((url, body) => {
@@ -116,6 +117,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     expect(wrapper.html()).toContain("メールアドレス");
   });
@@ -124,6 +128,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     expect(wrapper.find("input[type='email']").exists()).toBeTruthy();
   });
@@ -132,6 +139,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     expect(wrapper.html()).toContain("パスワード");
   });
@@ -140,6 +150,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     expect(wrapper.find("input[type='passwrd']")).toBeTruthy();
   });
@@ -149,6 +162,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     // 要素に値を設定
     let email = wrapper.find('[type="email"]');
@@ -169,6 +185,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     // 要素に値を設定
     let email = wrapper.find('[type="email"]');
@@ -189,6 +208,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     // 要素に値を設定
     let password = wrapper.find("#password-field");
@@ -206,6 +228,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     // 要素に値を設定
     let password = wrapper.find("#password-field");
@@ -243,6 +268,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
 
     const email = wrapper.find("#email-field");
@@ -267,6 +295,9 @@ describe("LoginPage", () => {
     const wrapper = mount(Login, {
       localVue,
       vuetify,
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
     const email = wrapper.find("#email-field");
     const password = wrapper.find("#password-field");
