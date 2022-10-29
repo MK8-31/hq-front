@@ -26,8 +26,8 @@ Axios.defaults.withCredentials = true;
 
 router.beforeEach((to, from, next) => {
   // ログインに必要なトークンがあるかどうか確認
-  const auth_cookie = VueCookies.get("auth_cookie");
-  if (auth_cookie) {
+  const isLoggedIn = VueCookies.get("isLoggedIn");
+  if (isLoggedIn) {
     store.commit("setLoggedIn", true);
   }
   // isPublic でない場合(=認証が必要な場合)、かつ、ログインしていない場合
