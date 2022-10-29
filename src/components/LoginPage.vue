@@ -93,13 +93,9 @@
       password: "",
       invalid: true,
       errorMessage: "",
+      // test用
       login: false,
     }),
-    computed: {
-      loggedIn() {
-        return this.$store.getters.getLoggedIn;
-      },
-    },
     methods: {
       /**
        * ログインをする
@@ -110,19 +106,8 @@
             email: this.email,
             password: this.password,
           })
-          .then((response) => {
+          .then(() => {
             this.login = true;
-            // クッキーにログイン保持に必要なヘッダー情報を保存
-            this.$cookies.set("access-token", response.headers["access-token"]);
-            this.$cookies.set("client", response.headers["client"]);
-            this.$cookies.set("uid", decodeURI(response.headers["uid"]));
-            // vuexにログイン保持に必要なヘッダー情報を保存
-            this.$store.commit(
-              "setRequestHeadersRequiredToMaintainLoginStatus",
-              response.headers["access-token"],
-              response.headers["client"],
-              decodeURI(response.headers["uid"])
-            );
             this.$store.commit("setLoggedIn", true);
             this.$router.push("/record");
           })

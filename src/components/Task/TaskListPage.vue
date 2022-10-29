@@ -81,13 +81,7 @@
        */
       async getTasks() {
         await axios
-          .get("/api/v1/tasks", {
-            headers: {
-              "access-token": this.$cookies.get("access-token"),
-              client: this.$cookies.get("client"),
-              uid: this.$cookies.get("uid"),
-            },
-          })
+          .get("/api/v1/tasks")
           .then((response) => {
             // console.log(response);
             this.tasks = response.data.data;

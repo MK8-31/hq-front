@@ -182,13 +182,7 @@
        */
       async getTasks() {
         await axios
-          .get("/api/v1/tasks", {
-            headers: {
-              "access-token": this.$cookies.get("access-token"),
-              client: this.$cookies.get("client"),
-              uid: this.$cookies.get("uid"),
-            },
-          })
+          .get("/api/v1/tasks")
           .then((response) => {
             // console.log(response);
             this.tasks = response.data.data;
@@ -220,21 +214,11 @@
         this.nowLoading = true;
 
         await axios
-          .post(
-            "/api/v1/task_records",
-            {
-              task: {
-                id: taskId,
-              },
+          .post("/api/v1/task_records", {
+            task: {
+              id: taskId,
             },
-            {
-              headers: {
-                "access-token": this.$cookies.get("access-token"),
-                client: this.$cookies.get("client"),
-                uid: this.$cookies.get("uid"),
-              },
-            }
-          )
+          })
           .then((response) => {
             this.displayList[i].last_time = moment().format("YYYY-MM-DD");
             // console.log(response);

@@ -122,21 +122,11 @@
        */
       async updateTask() {
         await axios
-          .put(
-            `/api/v1/tasks/${this.task.id}`,
-            {
-              task: {
-                name: this.taskName,
-              },
+          .put(`/api/v1/tasks/${this.task.id}`, {
+            task: {
+              name: this.taskName,
             },
-            {
-              headers: {
-                "access-token": this.$cookies.get("access-token"),
-                client: this.$cookies.get("client"),
-                uid: this.$cookies.get("uid"),
-              },
-            }
-          )
+          })
           .then(() => {
             this.$router.push("/task_list");
           })

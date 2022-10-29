@@ -138,13 +138,7 @@
        */
       async logout() {
         await axios
-          .delete("/api/v1/auth/sign_out", {
-            data: {
-              uid: decodeURIComponent(this.$cookies.get("uid")),
-              "access-token": this.$cookies.get("access-token"),
-              client: this.$cookies.get("client"),
-            },
-          })
+          .delete("/api/v1/auth/sign_out")
           .then(() => {
             this.logout_dialog = false;
             this.$router.go({
@@ -155,11 +149,6 @@
           .catch((err) => {
             console.error(err);
           });
-
-        // apiとの通信が失敗したり、DB情報が変わると失敗となり、フリーズしてしまうためここに配置
-        this.$cookies.remove("uid");
-        this.$cookies.remove("access-token");
-        this.$cookies.remove("client");
       },
     },
   };

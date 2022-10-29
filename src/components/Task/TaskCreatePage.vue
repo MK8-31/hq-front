@@ -69,21 +69,11 @@
        */
       async createTask() {
         await axios
-          .post(
-            "/api/v1/tasks",
-            {
-              task: {
-                name: this.taskName,
-              },
+          .post("/api/v1/tasks", {
+            task: {
+              name: this.taskName,
             },
-            {
-              headers: {
-                "access-token": this.$cookies.get("access-token"),
-                client: this.$cookies.get("client"),
-                uid: this.$cookies.get("uid"),
-              },
-            }
-          )
+          })
           .then(() => {
             this.$router.push("/task_list");
           })

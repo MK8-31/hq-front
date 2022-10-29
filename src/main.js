@@ -22,18 +22,12 @@ Axios.defaults.baseURL =
     ? "https://hq-api-btsxj3ofqa-an.a.run.app"
     : "http://localhost:3030";
 
+Axios.defaults.withCredentials = true;
+
 router.beforeEach((to, from, next) => {
   // ログインに必要なトークンがあるかどうか確認
-  const accessToken = VueCookies.get("access-token");
-  const client = VueCookies.get("client");
-  const uid = VueCookies.get("uid");
-  if (accessToken && client && uid) {
-    store.commit(
-      "setRequestHeadersRequiredToMaintainLoginStatus",
-      accessToken,
-      client,
-      uid
-    );
+  const auth_cookie = VueCookies.get("auth_cookie");
+  if (auth_cookie) {
     store.commit("setLoggedIn", true);
   }
   // isPublic でない場合(=認証が必要な場合)、かつ、ログインしていない場合

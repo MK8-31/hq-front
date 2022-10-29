@@ -65,13 +65,7 @@
        */
       async getRecord() {
         await axios
-          .get("/api/v1/records/show", {
-            headers: {
-              "access-token": this.$cookies.get("access-token"),
-              client: this.$cookies.get("client"),
-              uid: this.$cookies.get("uid"),
-            },
-          })
+          .get("/api/v1/records/show")
           .then((response) => {
             // console.log(response);
             const lv = response.data.data.level;
