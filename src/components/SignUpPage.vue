@@ -126,12 +126,9 @@
             email: this.email,
             password: this.password,
           })
-          .then((response) => {
+          .then(() => {
             this.signup = true;
-            // console.log(response);
-            this.$cookies.set("access-token", response.headers["access-token"]);
-            this.$cookies.set("client", response.headers["client"]);
-            this.$cookies.set("uid", decodeURI(response.headers["uid"]));
+            this.$cookies.set("isLoggedIn", true);
             this.$store.commit("setLoggedIn", true);
             this.$router.push("/");
           })
