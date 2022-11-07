@@ -122,6 +122,18 @@
             ログイン
           </span>
         </v-btn>
+        <v-btn
+          v-if="!loggedIn"
+          color="grey"
+          @click="testLogin()"
+          outlined
+          large
+          class="ml-4 ml-md-5"
+        >
+          <span class="grey--text text--darken-1 font-weight-bold">
+            お試しログイン
+          </span>
+        </v-btn>
 
         <v-btn
           v-if="loggedIn"
@@ -270,6 +282,7 @@
 </template>
 
 <script>
+  import axios from "axios";
   export default {
     data() {
       return {
@@ -324,11 +337,37 @@
           ["3", "Job"],
           ["∞", "probability"],
         ],
+        // for test
+        login: false,
       };
     },
     computed: {
       loggedIn() {
         return this.$store.getters.getLoggedIn;
+      },
+    },
+    methods: {
+      /**
+       * テストログインをする
+       */
+      async testLogin() {
+        await axios
+          .post("/api/v1/auth/test_login")
+          .then(() => {
+            this.login = true;
+            this.$cookies.set("isLoggedIn", true);
+            this.$store.commit("setLoggedIn", true);
+            this.$router.push("/record");
+          })
+          .catch((error) => {
+            this.errorMessage =
+              "メールアドレスとパスワードの組み合わせが正しくありません。";
+            console.error(error);
+            console.error(error.response);
+            error.response.data.errors.forEach((error) => {
+              console.error(error);
+            });
+          });
       },
     },
   };

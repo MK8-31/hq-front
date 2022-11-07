@@ -80,6 +80,9 @@
     <v-card width="400px" class="mx-auto mt-5">
       <v-btn to="/login" text>ログインはこちら</v-btn>
     </v-card>
+    <v-card width="400px" class="mx-auto mt-5">
+      <v-btn @click="testLogin()" text>お試しログイン</v-btn>
+    </v-card>
   </div>
 </template>
 
@@ -141,6 +144,28 @@
             });
             error.response.data.errors.full_messages.forEach((error) => {
               this.errorMessages.push(error);
+            });
+          });
+      },
+      /**
+       * テストログインをする
+       */
+      async testLogin() {
+        await axios
+          .post("/api/v1/auth/test_login")
+          .then(() => {
+            this.login = true;
+            this.$cookies.set("isLoggedIn", true);
+            this.$store.commit("setLoggedIn", true);
+            this.$router.push("/record");
+          })
+          .catch((error) => {
+            this.errorMessage =
+              "メールアドレスとパスワードの組み合わせが正しくありません。";
+            console.error(error);
+            console.error(error.response);
+            error.response.data.errors.forEach((error) => {
+              console.error(error);
             });
           });
       },
