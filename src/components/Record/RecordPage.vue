@@ -60,7 +60,7 @@
           <div>経験値獲得</div>
         </v-card-title>
         <v-card-text v-if="isLevelUp" class="text-center mt-5 mb-5">
-          <h1 class="primary--text">Level Up!</h1>
+          <h1 class="primary--text lv-up">Level Up!</h1>
         </v-card-text>
         <v-card-text class="text-center mb-5">
           <v-progress-circular
@@ -281,5 +281,20 @@
 <style>
   .v-card--hover {
     margin: 0;
+  }
+
+  .lv-up {
+    animation: come-up-anim 3s linear infinite;
+  }
+
+  @keyframes come-up-anim {
+    0% {
+      opacity: 0.3;
+      transform: translateY(70%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
   }
 </style>
