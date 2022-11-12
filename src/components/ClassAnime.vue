@@ -19,9 +19,9 @@
   .divImg {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 200px;
     background-color: white;
-    font-size: 40px;
+    font-size: 36px;
     font-weight: bold;
     font-family: "Overpass", sans-serif;
     font-family: "Rampart One", cursive;
@@ -29,12 +29,12 @@
 
   img {
     display: block;
-    margin: -140.85px auto auto -90px;
+    margin: -85px auto auto -85px;
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
-    width: 180px;
-    height: 281.7px;
+    width: 170px;
+    height: 170px;
     background-color: white;
     border-style: none;
     background-clip: padding-box;
@@ -52,7 +52,7 @@
   .right-top {
     position: absolute;
     top: 10%;
-    right: 5%;
+    right: 10%;
     z-index: 2;
     animation: come-down-anim 3s linear;
   }
