@@ -54,6 +54,7 @@
       ></v-pagination>
     </v-card>
     <v-dialog v-model="showResult" max-width="400">
+      <ClassAnime />
       <v-card>
         <v-card-title>
           <div>経験値獲得</div>
@@ -115,8 +116,12 @@
 <script>
   import axios from "axios";
   import moment from "moment";
+  import ClassAnime from "@/components/ClassAnime.vue";
 
   export default {
+    components: {
+      ClassAnime,
+    },
     data: () => ({
       /**
        * @type {number} ページネーションのページを指定
@@ -210,6 +215,7 @@
        * タスク達成を記録する関数
        */
       async record(i, taskId) {
+        this.showResult = true;
         this.loading[String(i)] = true;
         this.nowLoading = true;
 
@@ -233,7 +239,6 @@
               exp - Math.round(12 * ((1 - 1.5 ** (lv - 1)) / (1 - 1.5)));
             this.isLevelUp = response.data.is_level_up;
 
-            this.showResult = true;
             setTimeout(() => {
               this.lv = lv;
               this.exp = exp;
