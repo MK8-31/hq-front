@@ -84,7 +84,7 @@
       transform: translateY(-100%);
     }
     100% {
-      transform: translateY(8%);
+      transform: translateY(0%);
     }
   }
 
