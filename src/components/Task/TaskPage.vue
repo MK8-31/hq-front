@@ -82,7 +82,20 @@
           <v-col cols="6">
             <v-row>
               <v-col cols="12" class="pb-0">
-                <h3>継続週数</h3>
+                <h3>
+                  継続週数
+                  <v-btn
+                    @click="(help_dialog = true) && (help_num = 2)"
+                    class="mx-1"
+                    outlined
+                    icon
+                    x-small
+                  >
+                    <v-icon dark>
+                      mdi-help
+                    </v-icon>
+                  </v-btn>
+                </h3>
                 <p class="mb-0">※週に４日以上の達成</p>
               </v-col>
               <v-col cols="12" class="pt-0">
@@ -149,7 +162,7 @@
   export default {
     data: () => ({
       task: {},
-      startWeekDays: "",
+      startWeekDays: "日",
       taskId: 0,
       help_dialog: false,
       help_num: 0,
@@ -162,6 +175,11 @@
         {
           title: "継続日数とは",
           message: "このタスクを連続して達成した日数",
+        },
+        {
+          title: "継続週数とは",
+          message:
+            "このタスクを連続して達成した週の数。週に4日以上の達成でカウントされる。研究結果より、この継続週数が13以上(３ヶ月と少し)になれば習慣化できたと言える。",
         },
       ],
     }),
@@ -176,8 +194,6 @@
         this.taskId = Number(this.$route.params["id"]);
         // vuexのストアからタスクIDでタスクを取得する
         this.task = this.$store.getters.getTaskFromId(this.taskId);
-        // console.log(this.task);
-        this.startWeekDays = moment(this.task.created_at).format("ddd");
       }
     },
     computed: {},

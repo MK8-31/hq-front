@@ -39,20 +39,52 @@
     </v-card>
     <v-card class="mx-auto px-5 py-5 mt-4" max-width="500">
       <h2 class="mb-4">
-        <v-icon>
+        <v-icon class="mb-1">
           mdi-alert
         </v-icon>
         注意
       </h2>
-      <p>作成した日の曜日を週の始まりとして記録します。<br /></p>
+      <p>
+        作成した日の週の日曜日から記録が開始されます。<br />
+        <span class="text-h6 font-weight-bold">継続週数</span>
+        <v-btn
+          @click="(help_dialog = true) && (help_num = 1)"
+          class="mx-1 mb-1"
+          outlined
+          icon
+          x-small
+        >
+          <v-icon dark>
+            mdi-help
+          </v-icon>
+        </v-btn>
+        は週に4日以上の達成でカウントされる点にご注意ください。
+      </p>
       <p>
         <v-icon class="mb-1">
           mdi-information-outline
         </v-icon>
-        例<br />
-        作成日が火曜日だとすると、火曜日から月曜日までの７日間に何日間達成できたのかを記録します。
+        <span class="text-h6 font-weight-bold ml-1">例</span><br />
+        作成日が水曜日だとすると、第1週目は水曜日から日曜日までの4日間に何日達成できたのかが記録されます。<br />
       </p>
     </v-card>
+    <v-dialog v-model="help_dialog" max-width="400">
+      <v-card>
+        <v-card-title>
+          <div>継続週数とは</div>
+        </v-card-title>
+        <v-card-text>
+          <p>
+            このタスクを連続して達成した週の数。週に4日以上の達成でカウントされる。研究結果より、この継続週数が13以上(３ヶ月と少し)になれば習慣化できたと言える。
+          </p>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="help_dialog = false">閉じる</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -78,6 +110,7 @@
     data: () => ({
       taskName: "",
       errorMessage: "",
+      help_dialog: false,
     }),
     methods: {
       /**
