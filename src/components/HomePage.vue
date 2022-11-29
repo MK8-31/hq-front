@@ -40,7 +40,7 @@
                     class="align-self-end"
                     fab
                     outlined
-                    @click="$vuetify.goTo('#about-me')"
+                    @click="$vuetify.goTo('#about-scroll')"
                   >
                     <v-icon>mdi-chevron-double-down</v-icon>
                   </v-btn>
@@ -81,7 +81,7 @@
     <section id="about-me">
       <div class="py-12"></div>
 
-      <v-container class="text-center">
+      <v-container id="about-scroll" class="text-center">
         <h2 class="display-2 font-weight-bold mb-3">ABOUT</h2>
 
         <v-responsive class="mx-auto mb-8" width="56">
@@ -95,8 +95,10 @@
           max-width="720"
         >
           習慣と複利の力で最強に！<br />
-          アニメやラノベ主人公のように強くなってみませんか？このアプリならそれが可能です！！<br />
-          タスクを設定し、それを毎日こなすことで習慣化することができ、それを繰り返すうちに気がつけば最強に...
+          アニメやラノベ主人公のように強くなってみませんか？<br />
+          このアプリならそれが可能です！！<br />
+          タスクを設定し、それを毎日こなすことで習慣化することができ、<br />
+          それを繰り返すうちに気がつけば最強に...
         </v-responsive>
 
         <v-avatar class="elevation-12 mb-12" size="120">
@@ -105,35 +107,45 @@
 
         <div></div>
 
-        <v-btn
-          v-if="!loggedIn"
-          class="mr-4 mr-md-5"
-          color="grey"
-          to="/signup"
-          outlined
-          large
-        >
-          <span class="grey--text text--darken-1 font-weight-bold">
-            登録する
-          </span>
-        </v-btn>
-        <v-btn v-if="!loggedIn" color="grey" to="/login" outlined large>
-          <span class="grey--text text--darken-1 font-weight-bold">
-            ログイン
-          </span>
-        </v-btn>
-        <v-btn
-          v-if="!loggedIn"
-          color="grey"
-          @click="testLogin()"
-          outlined
-          large
-          class="ml-4 ml-md-5"
-        >
-          <span class="grey--text text--darken-1 font-weight-bold">
-            お試しログイン
-          </span>
-        </v-btn>
+        <v-container class="maxWidth">
+          <v-row>
+            <v-col col-4 class="px-0">
+              <v-btn
+                v-if="!loggedIn"
+                class=""
+                color="grey"
+                to="/signup"
+                outlined
+                large
+              >
+                <span class="grey--text text--darken-1 font-weight-bold">
+                  登録する
+                </span>
+              </v-btn>
+            </v-col>
+            <v-col col-4 class="px-0">
+              <v-btn v-if="!loggedIn" color="grey" to="/login" outlined large>
+                <span class="grey--text text--darken-1 font-weight-bold">
+                  ログイン
+                </span>
+              </v-btn>
+            </v-col>
+            <v-col col-4 class="px-0">
+              <v-btn
+                v-if="!loggedIn"
+                color="grey"
+                @click="testLogin()"
+                outlined
+                large
+                class=""
+              >
+                <span class="grey--text text--darken-1 font-weight-bold">
+                  お試しログイン
+                </span>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
 
         <v-btn
           v-if="loggedIn"
@@ -373,4 +385,8 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .maxWidth {
+    max-width: 500px;
+  }
+</style>
