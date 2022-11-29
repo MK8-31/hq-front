@@ -37,6 +37,22 @@
         </v-form>
       </validation-observer>
     </v-card>
+    <v-card class="mx-auto px-5 py-5 mt-4" max-width="500">
+      <h2 class="mb-4">
+        <v-icon>
+          mdi-alert
+        </v-icon>
+        注意
+      </h2>
+      <p>作成した日の曜日を週の始まりとして記録します。<br /></p>
+      <p>
+        <v-icon class="mb-1">
+          mdi-information-outline
+        </v-icon>
+        例<br />
+        作成日が火曜日だとすると、火曜日から月曜日までの７日間に何日間達成できたのかを記録します。
+      </p>
+    </v-card>
   </div>
 </template>
 
