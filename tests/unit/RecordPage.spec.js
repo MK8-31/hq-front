@@ -1,104 +1,74 @@
-import flushPromises from "flush-promises";
 import RecordPage from "@/components/Record/RecordPage.vue";
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 const { required } = require("vee-validate/dist/rules.umd");
 extend("required", required);
 import Vuetify from "vuetify";
 import { createLocalVue, mount } from "@vue/test-utils";
+import Vuex from "vuex";
+import VueRouter from "vue-router";
 
 jest.mock("axios", () => ({
+  get: jest.fn((url, body) => {
+    return Promise.resolve({
+      data: {
+        status: "SUCCESS",
+        message: "Loaded tasks",
+        data: [
+          {
+            id: 1,
+            name: "腕立て10回",
+            day: 0,
+            week: 0,
+            days_a_week: 0,
+            running_days: 0,
+            running_weeks: 0,
+            last_time: "2022-12-03",
+            user_id: 19,
+            created_at: "2022-11-26T21:24:17.818+09:00",
+            updated_at: "2022-12-03T09:43:32.673+09:00",
+          },
+          {
+            id: 2,
+            name: "腹筋10回",
+            day: 0,
+            week: 0,
+            days_a_week: 0,
+            running_days: 0,
+            running_weeks: 0,
+            last_time: "2022-12-03",
+            user_id: 19,
+            created_at: "2022-11-26T21:24:17.818+09:00",
+            updated_at: "2022-12-03T09:43:32.673+09:00",
+          },
+          {
+            id: 3,
+            name: "ランニング",
+            day: 0,
+            week: 0,
+            days_a_week: 0,
+            running_days: 0,
+            running_weeks: 0,
+            last_time: "2022-12-03",
+            user_id: 19,
+            created_at: "2022-11-26T21:24:17.818+09:00",
+            updated_at: "2022-12-03T09:43:32.673+09:00",
+          },
+        ],
+      },
+      status: 200,
+    });
+  }),
   post: jest.fn((url, body) => {
-    // console.log(url, body);
-    if (body.email == "test@example.com" && body.password == "password") {
-      return Promise.resolve({
+    console.log(url, body);
+    return Promise.resolve({
+      data: {
         data: {
-          data: {
-            email: "test@example.com",
-            id: 4,
-            uid: "test@example.com",
-            provider: "email",
-            allow_password_change: false,
-            name: null,
-            nickname: "test",
-            image: null,
-          },
+          level: 1,
+          exp: 6,
         },
-        status: 200,
-        statusText: "OK",
-        headers: {
-          "access-token": "Q2lbYDSN7KgBrmQQ2WiOAQ",
-          "cache-control": "max-age=0, private, must-revalidate",
-          client: "3MFitDOQahmt1VrNNCBCQQ",
-          "content-type": "application/json; charset=utf-8",
-          expiry: "1652671700",
-          "token-type": "Bearer",
-          uid: "a@a.com",
-        },
-        config: {
-          transitional: {
-            silentJSONParsing: true,
-            forcedJSONParsing: true,
-            clarifyTimeoutError: false,
-          },
-          transformRequest: [null],
-          transformResponse: [null],
-          timeout: 0,
-          xsrfCookieName: "XSRF-TOKEN",
-          xsrfHeaderName: "X-XSRF-TOKEN",
-          maxContentLength: -1,
-          maxBodyLength: -1,
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-          baseURL: "http://localhost:3030",
-          method: "post",
-          url: "/api/v1/auth/sign_in",
-          data: '{"email":"test@example.com","password":"password"}',
-        },
-        request: {},
-      });
-    } else {
-      return Promise.reject({
-        response: {
-          data: {
-            success: false,
-            errors: [
-              "ログイン用の認証情報が正しくありません。再度お試しください。",
-            ],
-          },
-          status: 401,
-          statusText: "Unauthorized",
-          headers: {
-            "cache-control": "no-cache",
-            "content-type": "application/json; charset=utf-8",
-          },
-          config: {
-            transitional: {
-              silentJSONParsing: true,
-              forcedJSONParsing: true,
-              clarifyTimeoutError: false,
-            },
-            transformRequest: [null],
-            transformResponse: [null],
-            timeout: 0,
-            xsrfCookieName: "XSRF-TOKEN",
-            xsrfHeaderName: "X-XSRF-TOKEN",
-            maxContentLength: -1,
-            maxBodyLength: -1,
-            headers: {
-              Accept: "application/json, text/plain, */*",
-              "Content-Type": "application/json",
-            },
-            baseURL: "http://localhost:3030",
-            method: "post",
-            url: "/api/v1/auth/sign_in",
-            data: '{"email":"sdes@oia.com","password":"zzzzzzzz"}',
-          },
-          request: {},
-        },
-      });
-    }
+      },
+      status: 200,
+    });
   }),
 }));
 
@@ -106,167 +76,54 @@ describe("LoginPage", () => {
   const localVue = createLocalVue();
   localVue.component("ValidationObserver", ValidationObserver);
   localVue.component("ValidationProvider", ValidationProvider);
+  localVue.use(Vuex);
+  let store = new Vuex.Store({
+    state: {
+      tasks: [],
+    },
+    mutations: {
+      setTasks(state, data) {
+        state.authenticated = data;
+      },
+    },
+  });
+  localVue.use(VueRouter);
   let vuetify;
+  let wrapper;
 
   beforeEach(() => {
     vuetify = new Vuetify();
+    wrapper = mount(RecordPage, {
+      localVue,
+      vuetify,
+      store,
+    });
   });
 
   it("ページタイトルがある", () => {
-    const wrapper = mount(RecordPage, {
-      localVue,
-      vuetify,
-    });
     expect(wrapper.html()).toContain("記録");
   });
 
-  // it("タスクが正しく表示されている", async () => {
-  //   const wrapper = mount(RecordPage, {
-  //     data() {
-  //       return {
-  //         tasks: [
-  //           {
-  //             id: 72,
-  //             name: "飽くまでもなんべいけいけんしゃ。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 3,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.759+09:00",
-  //             updated_at: "2022-06-19T18:16:19.267+09:00",
-  //           },
-  //           {
-  //             id: 73,
-  //             name: "おきゃくさんへいがいつなひき。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.765+09:00",
-  //             updated_at: "2022-06-19T18:16:23.708+09:00",
-  //           },
-  //           {
-  //             id: 74,
-  //             name: "おきゃくさんおどろく撃つ。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.770+09:00",
-  //             updated_at: "2022-06-19T18:16:31.677+09:00",
-  //           },
-  //           {
-  //             id: 75,
-  //             name: "希望する自宅どろ。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.776+09:00",
-  //             updated_at: "2022-06-19T18:16:34.382+09:00",
-  //           },
-  //           {
-  //             id: 76,
-  //             name: "ぶんつく遮断。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.782+09:00",
-  //             updated_at: "2022-06-19T18:16:36.772+09:00",
-  //           },
-  //           {
-  //             id: 77,
-  //             name: "浸すじぎするきょうふ。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.787+09:00",
-  //             updated_at: "2022-06-19T18:16:41.870+09:00",
-  //           },
-  //           {
-  //             id: 78,
-  //             name: "しょうじょう好き備える。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.793+09:00",
-  //             updated_at: "2022-06-19T18:17:37.096+09:00",
-  //           },
-  //           {
-  //             id: 79,
-  //             name: "こくふくする隆起漠然。",
-  //             day: 1,
-  //             week: 0,
-  //             days_a_week: 1,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-14",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.799+09:00",
-  //             updated_at: "2022-06-14T10:57:27.876+09:00",
-  //           },
-  //           {
-  //             id: 80,
-  //             name: "フランス語検査間隔。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.807+09:00",
-  //             updated_at: "2022-06-19T18:26:02.965+09:00",
-  //           },
-  //           {
-  //             id: 81,
-  //             name: "ごうけんせっぷく乗せる。",
-  //             day: 6,
-  //             week: 0,
-  //             days_a_week: 2,
-  //             running_days: 0,
-  //             running_weeks: 0,
-  //             last_time: "2022-06-19",
-  //             user_id: 23,
-  //             created_at: "2022-06-13T16:58:07.814+09:00",
-  //             updated_at: "2022-06-19T18:25:30.740+09:00",
-  //           },
-  //         ],
-  //       };
-  //     },
-  //     localVue,
-  //     vuetify,
-  //   });
+  it("タスクの取得が正常にできるか", async () => {
+    expect(wrapper.vm.tasks.length).toBe(3);
+    expect(wrapper.vm.displayList.length).toBe(3);
+    expect(wrapper.vm.tasks[0].name).toBe("腕立て10回");
+    expect(wrapper.vm.tasks[1].name).toBe("腹筋10回");
+    expect(wrapper.vm.tasks[2].name).toBe("ランニング");
+    expect(wrapper.vm.displayList[0].name).toBe("腕立て10回");
+    expect(wrapper.vm.displayList[1].name).toBe("腹筋10回");
+    expect(wrapper.vm.displayList[2].name).toBe("ランニング");
+  });
 
-  //   await flushPromises();
-  //   console.log(wrapper.html());
-  //   const data = wrapper.vm.$data;
-  //   console.log(data);
-  //   console.log(data.tasks);
-  //   expect(wrapper.vm.displayList.length).toBe(6);
-  // });
+  it("タスクが正しく表示されている", () => {
+    expect(wrapper.html()).toContain("腕立て10回");
+    expect(wrapper.html()).toContain("腹筋10回");
+    expect(wrapper.html()).toContain("ランニング");
+  });
+
+  it("記録が正常にできるか", async () => {
+    await wrapper.vm.record(0, 1);
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.nowLvExp).toBe(6);
+  });
 });

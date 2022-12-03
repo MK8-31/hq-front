@@ -117,6 +117,10 @@
   import axios from "axios";
   import moment from "moment";
   import ClassAnime from "@/components/ClassAnime.vue";
+  import {
+    exRequiredToLevelUp,
+    cumulativeExperience,
+  } from "@/common/exValueRelated.js";
 
   export default {
     components: {
@@ -179,7 +183,6 @@
       this.displayList = this.tasks.slice(0, this.pageSize);
 
       this.isDisplayTasksCompeted();
-      // console.log(this.displayList);
     },
     methods: {
       /**
@@ -189,7 +192,6 @@
         await axios
           .get("/api/v1/tasks")
           .then((response) => {
-            // console.log(response);
             this.tasks = response.data.data;
             this.$store.commit("setTasks", response.data.data);
             // // console.log(this.tasks);
@@ -227,16 +229,14 @@
           })
           .then((response) => {
             this.displayList[i].last_time = moment().format("YYYY-MM-DD");
-            // console.log(response);
             // 今のレベル
             const lv = response.data.data.level;
             // 累計経験値
             const exp = response.data.data.exp;
             // レベルアップに必要な経験値
-            this.nowLvMaxExp = Math.round(12 * 1.5 ** (lv - 1));
+            this.nowLvMaxExp = exRequiredToLevelUp[lv];
             // 今のレベルになってからの経験値
-            this.nowLvExp =
-              exp - Math.round(12 * ((1 - 1.5 ** (lv - 1)) / (1 - 1.5)));
+            this.nowLvExp = exp - cumulativeExperience[lv - 1];
             this.isLevelUp = response.data.is_level_up;
 
             setTimeout(() => {
