@@ -6,9 +6,11 @@ import Vuetify from "vuetify";
 import { createLocalVue, mount } from "@vue/test-utils";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
+import flushPromises from "flush-promises";
 
 jest.mock("axios", () => ({
   get: jest.fn((url, body) => {
+    console.log("get:" + url + ", " + body);
     return Promise.resolve({
       data: {
         status: "SUCCESS",
@@ -88,6 +90,7 @@ describe("LoginPage", () => {
     },
   });
   localVue.use(VueRouter);
+  const router = new VueRouter();
   let vuetify;
   let wrapper;
 
@@ -97,6 +100,7 @@ describe("LoginPage", () => {
       localVue,
       vuetify,
       store,
+      router,
     });
   });
 
@@ -122,8 +126,20 @@ describe("LoginPage", () => {
   });
 
   it("記録が正常にできるか", async () => {
-    await wrapper.vm.record(0, 1);
-    wrapper.vm.$nextTick();
+    const taskRecordBtn = wrapper.find("#taskRecord-0");
+    taskRecordBtn.trigger("click");
+    await flushPromises();
     expect(wrapper.vm.nowLvExp).toBe(6);
+  });
+
+  it("記録後、タスク詳細ボタンをクリック", async () => {
+    const taskRecordBtn = wrapper.find("#taskRecord-1");
+    taskRecordBtn.trigger("click");
+    await flushPromises();
+    console.log(wrapper.html());
+    const taskDetailsBtn = wrapper.find("#taskDetails");
+    taskDetailsBtn.trigger("click");
+    await flushPromises();
+    expect(wrapper.vm.$route.path).toBe("/task/2");
   });
 });

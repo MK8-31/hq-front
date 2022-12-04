@@ -14,6 +14,7 @@
           lg="6"
         >
           <v-card
+            :id="('taskRecord-' + i)"
             hover
             :loading="loading[String(i)]"
             @click="complete[String(i)] ? '' : record(i, task.id)"
@@ -86,6 +87,13 @@
         </v-card-text>
 
         <v-card-actions>
+          <v-btn
+            id="taskDetails"
+            color="info"
+            link
+            :to="('/task/' + taskId + '?update=true')"
+            >タスクの詳細</v-btn
+          >
           <v-spacer></v-spacer>
           <v-btn @click="showResult = false">閉じる</v-btn>
         </v-card-actions>
@@ -169,6 +177,7 @@
         "5": false,
       },
       showResult: false,
+      taskId: 0,
       lv: 1,
       exp: 0,
       rate: 0,
@@ -217,6 +226,7 @@
        * タスク達成を記録する関数
        */
       async record(i, taskId) {
+        this.taskId = taskId;
         this.showResult = true;
         this.loading[String(i)] = true;
         this.nowLoading = true;

@@ -6,6 +6,31 @@ import { config } from "@vue/test-utils";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 
+jest.mock("axios", () => ({
+  get: jest.fn((url, body) => {
+    return Promise.resolve({
+      data: {
+        status: "SUCCESS",
+        message: "Loaded tasks",
+        data: {
+          id: 7,
+          name: "芸者殻たくす。",
+          day: 1,
+          week: 0,
+          days_a_week: 1,
+          running_days: 1,
+          running_weeks: 0,
+          last_time: "2022-05-03",
+          user_id: 7,
+          created_at: "2022-05-03T22:46:32.968Z",
+          updated_at: "2022-05-03T22:46:32.968Z",
+        },
+      },
+      status: 200,
+    });
+  }),
+}));
+
 describe("TaskPage", () => {
   const localVue = createLocalVue();
   localVue.use(Vuex);
@@ -202,6 +227,14 @@ describe("TaskPage", () => {
       setTasks(state, value) {
         state.tasks = value;
       },
+      updateTask(state, updatedTask) {
+        let index = state.tasks.findIndex((task) => task.id === updatedTask.id);
+        if (index === -1) {
+          console.error("Task id not found");
+          return;
+        }
+        state.tasks[index] = updatedTask;
+      },
     };
     store = new Vuex.Store({
       state,
@@ -289,5 +322,28 @@ describe("TaskPage", () => {
     backToListBtn.trigger("click");
     await flushPromises();
     expect(wrapper.vm.$route.path).toBe("/task_list");
+  });
+
+  it("記録後タスク詳細ページに遷移してきた場合、タスクの情報を更新", async () => {
+    router = new VueRouter({
+      routes: [
+        {
+          name: "task",
+          path: "/task/:id",
+          component: TaskPage,
+        },
+      ],
+    });
+    router.push({ name: "task", params: { id: 7 }, query: { update: true } });
+    const wrapper = mount(TaskPage, {
+      localVue,
+      vuetify,
+      store,
+      router,
+    });
+    await flushPromises();
+    console.log(store.getters.getTaskFromId(7).day);
+    expect(store.getters.getTaskFromId(7).day).toBe(1);
+    expect(wrapper.vm.task.day).toBe(1);
   });
 });

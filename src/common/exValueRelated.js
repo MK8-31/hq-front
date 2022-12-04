@@ -206,7 +206,8 @@ const cumulativeExperience = [
   6504978840563443816,
 ];
 
-exRequiredToLevelUp.freeze;
-cumulativeExperience.freeze;
+
+Object.freeze(exRequiredToLevelUp);
+Object.freeze(cumulativeExperience);
 
 export { exRequiredToLevelUp, cumulativeExperience };

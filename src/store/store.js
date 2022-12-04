@@ -62,9 +62,19 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    /**
+     * ログイン状態をセットする関数
+     * @param {Object} state state
+     * @param {Boolean} value ログインしているか
+     */
     setLoggedIn(state, value) {
       state.loggedIn = value;
     },
+    /**
+     * タスクの配列をセットする関数
+     * @param {Object} state state
+     * @param {Boolean} value タスクの配列
+     */
     setTasks(state, value) {
       state.tasks = value;
     },
@@ -77,6 +87,22 @@ export default new Vuex.Store({
       state.requestHeadersRequiredToMaintainLoginStatus.accessToken = accessToken;
       state.requestHeadersRequiredToMaintainLoginStatus.client = client;
       state.requestHeadersRequiredToMaintainLoginStatus.uid = uid;
+    },
+    /**
+     * タスク記録時に保持しているタスクの情報を更新する関数
+     * @param {Object} state state
+     * @param {Number} taskId 目的のタスクのid
+     * @param {Object} updatedTask 更新するタスク
+     */
+    updateTask(state, updatedTask) {
+      console.log(updatedTask);
+      let index = state.tasks.findIndex((task) => task.id === updatedTask.id);
+      console.log(index);
+      if (index === -1) {
+        console.error("Task id not found");
+        return;
+      }
+      state.tasks[index] = updatedTask;
     },
   },
 });
