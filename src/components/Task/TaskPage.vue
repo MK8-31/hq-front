@@ -16,7 +16,7 @@
       <v-btn id="backToList" class="mt-5" link color="info" to="/task_list"
         >リストに戻る</v-btn
       >
-      <v-btn class="mt-5 ml-5" link color="success" to="/record"
+      <v-btn class="mt-5 ml-sm-5" link color="success" to="/record"
         >記録する</v-btn
       >
     </v-card>

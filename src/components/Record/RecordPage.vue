@@ -23,6 +23,9 @@
             min-height="240"
             max-width="500"
             height="100%"
+            :class="
+              complete[String(i)] ? 'after-click-color' : 'before-click-color'
+            "
           >
             <template slot="progress">
               <v-progress-linear
@@ -32,16 +35,16 @@
               ></v-progress-linear>
             </template>
 
-            <v-card-title class="justify-center" v-text="task.name" />
+            <v-card-title class="justify-center task-name" v-text="task.name" />
             <v-spacer />
-            <p v-if="!complete[String(i)]" class="text-center">
-              Click me
+            <p v-if="!complete[String(i)]" class="click-message">
+              達成したらクリック！
             </p>
             <v-icon
               v-if="complete[String(i)]"
               x-large
               color="success"
-              class="mb-5"
+              class="check-icon"
               >mdi-check-circle-outline</v-icon
             >
           </v-card>
@@ -296,6 +299,32 @@
   .lv-up {
     animation: come-up-anim 3s linear infinite;
   }
+  .task-name {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .click-message {
+    margin-top: 45px;
+    font-size: 25px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: flowing-anim 4s forwards linear infinite;
+  }
+
+  .before-click-color {
+    background-color: #fff6bf !important;
+  }
+
+  .after-click-color {
+    background-color: #a5f1e9 !important;
+  }
+
+  .check-icon {
+    margin-top: 30px;
+    font-size: 80px !important;
+  }
 
   @keyframes come-up-anim {
     0% {
@@ -305,6 +334,18 @@
     100% {
       opacity: 1;
       transform: translateY(0%);
+    }
+  }
+
+  @keyframes flowing-anim {
+    0% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.3;
     }
   }
 </style>
