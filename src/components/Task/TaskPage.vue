@@ -211,6 +211,11 @@
 
         // vuexのストアからタスクIDでタスクを取得する
         this.task = this.$store.getters.getTaskFromId(this.taskId);
+
+        // 前回の記録が今週の日曜日よりも前なら今週の達成日数を0で表示
+        if (moment(this.task.last_time).isBefore(moment().day(0), "day")) {
+          this.task.days_a_week = 0;
+        }
       }
     },
     computed: {
