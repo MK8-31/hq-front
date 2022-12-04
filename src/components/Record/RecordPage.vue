@@ -15,7 +15,6 @@
         >
           <v-card
             :id="('taskRecord-' + i)"
-            hover
             :loading="loading[String(i)]"
             @click="complete[String(i)] ? '' : record(i, task.id)"
             outlined
@@ -34,12 +33,11 @@
                 indeterminate
               ></v-progress-linear>
             </template>
-
             <v-card-title class="justify-center task-name" v-text="task.name" />
             <v-spacer />
-            <p v-if="!complete[String(i)]" class="click-message">
-              達成したらクリック！
-            </p>
+            <v-icon v-if="!complete[String(i)]" x-large class="gesture-tap-icon"
+              >mdi-gesture-tap</v-icon
+            >
             <v-icon
               v-if="complete[String(i)]"
               x-large
@@ -310,11 +308,18 @@
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
-    animation: flowing-anim 4s forwards linear infinite;
+    animation: flowing-anim 3s forwards linear infinite;
   }
 
   .before-click-color {
     background-color: #fff6bf !important;
+    transition: 0.3s ease-in-out;
+    border-bottom: solid 7px #cbb109 !important;
+  }
+
+  .before-click-color:hover {
+    border-bottom: solid 2px #cbb109 !important;
+    transform: translateY(3px);
   }
 
   .after-click-color {
@@ -324,6 +329,13 @@
   .check-icon {
     margin-top: 30px;
     font-size: 80px !important;
+  }
+
+  .gesture-tap-icon {
+    color: black;
+    margin-top: 30px;
+    font-size: 100px !important;
+    animation: flowing-anim 3s forwards linear infinite;
   }
 
   @keyframes come-up-anim {
@@ -342,7 +354,7 @@
       opacity: 0.3;
     }
     50% {
-      opacity: 1;
+      opacity: 0.8;
     }
     100% {
       opacity: 0.3;
