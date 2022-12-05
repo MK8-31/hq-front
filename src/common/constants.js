@@ -12,7 +12,7 @@ export default {
     },
     {
       icon: "mdi-clipboard-outline",
-      name: "タスク作成/編集",
+      name: "タスクリスト(作成/編集)",
       url: "/task_list",
     },
     {
