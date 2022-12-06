@@ -142,13 +142,7 @@
        */
       async deleteTask() {
         await axios
-          .delete(`/api/v1/tasks/${this.task.id}`, {
-            headers: {
-              "access-token": this.$cookies.get("access-token"),
-              client: this.$cookies.get("client"),
-              uid: this.$cookies.get("uid"),
-            },
-          })
+          .delete(`/api/v1/tasks/${this.task.id}`)
           .then(() => {
             this.$router.push("/task_list");
           })
