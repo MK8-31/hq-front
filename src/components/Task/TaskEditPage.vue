@@ -18,6 +18,7 @@
               label="タスク名"
               required
               :error-messages="errors"
+              @keydown.enter="updateTask()"
             ></v-text-field>
           </validation-provider>
 
@@ -25,7 +26,7 @@
             id="updateTask"
             color="primary"
             class="mr-4"
-            @click="updateTask"
+            @click="updateTask()"
             :disabled="(isSameTaskName || invalid)"
           >
             <v-icon>mdi-cached</v-icon>更新

@@ -18,6 +18,7 @@
               label="タスク名"
               required
               :error-messages="errors"
+              @keydown.enter="createTask()"
             ></v-text-field>
           </validation-provider>
 
@@ -25,7 +26,7 @@
             id="submit"
             color="primary"
             class="mr-4"
-            @click="createTask"
+            @click="createTask()"
             :disabled="invalid"
           >
             <v-icon>mdi-plus</v-icon>作成
