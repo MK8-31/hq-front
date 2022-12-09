@@ -6,7 +6,8 @@
         errorMessage
       }}</v-alert>
       <validation-observer ref="observer" v-slot="{ invalid }">
-        <v-form ref="form" width="400">
+        <!-- @submit.preventによってsubmitイベントによってページがリロードされるのを防ぐ -->
+        <v-form ref="form" width="400" @submit.prevent>
           <validation-provider
             v-slot="{ errors }"
             name="タスク名"
@@ -18,7 +19,7 @@
               label="タスク名"
               required
               :error-messages="errors"
-              @keydown.enter="updateTask()"
+              @keydown.enter="updateTask"
             ></v-text-field>
           </validation-provider>
 
@@ -26,7 +27,7 @@
             id="updateTask"
             color="primary"
             class="mr-4"
-            @click="updateTask()"
+            @click="updateTask({ keyCode: 13 })"
             :disabled="(isSameTaskName || invalid)"
           >
             <v-icon>mdi-cached</v-icon>更新
@@ -121,7 +122,10 @@
       /**
        * タスクを編集する
        */
-      async updateTask() {
+      async updateTask(event) {
+        // 日本語入力中のEnterキー操作は無効にする
+        if (event.keyCode !== 13) return;
+
         await axios
           .put(`/api/v1/tasks/${this.task.id}`, {
             task: {

@@ -6,7 +6,8 @@
         errorMessage
       }}</v-alert>
       <validation-observer ref="observer" v-slot="{ invalid }">
-        <v-form ref="form" width="400">
+        <!-- @submit.preventによってsubmitイベントによってページがリロードされるのを防ぐ -->
+        <v-form ref="form" width="400" @submit.prevent>
           <validation-provider
             v-slot="{ errors }"
             name="タスク名"
@@ -18,7 +19,7 @@
               label="タスク名"
               required
               :error-messages="errors"
-              @keydown.enter="createTask()"
+              @keydown.enter="createTask"
             ></v-text-field>
           </validation-provider>
 
@@ -26,7 +27,7 @@
             id="submit"
             color="primary"
             class="mr-4"
-            @click="createTask()"
+            @click="createTask({ keyCode: 13 })"
             :disabled="invalid"
           >
             <v-icon>mdi-plus</v-icon>作成
@@ -117,7 +118,10 @@
       /**
        * タスクを作成する
        */
-      async createTask() {
+      async createTask(event) {
+        // 日本語入力中のEnterキー操作は無効にする
+        if (event.keyCode !== 13) return;
+
         await axios
           .post("/api/v1/tasks", {
             task: {
